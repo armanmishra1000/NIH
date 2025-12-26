@@ -10,6 +10,24 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Primary Colors */
+  --color-primary: #f3972a;
+  /* Orange */
+  --color-secondary: #155b2e;
+  /* Green */
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+
+  --animate-marquee: marquee 30s linear infinite;
 }
 
 @media (prefers-color-scheme: dark) {
