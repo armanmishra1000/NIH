@@ -2,11 +2,43 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { User, FileText, Calendar, Newspaper, Menu, X, ChevronDown } from "lucide-react";
+import { User, FileText, Calendar, Newspaper, Menu, X, ChevronDown, ChevronRight, ChevronLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+// Types for mobile menu items
+type MobileMenuItem = {
+  id: string;
+  name: string;
+  href?: string;
+  hasChildren?: true;
+  children?: readonly { name: string; href: string }[];
+};
+
+// Animation variants for mobile menu
+const overlayVariants = {
+  closed: { opacity: 0, pointerEvents: "none" as const },
+  open: { opacity: 1, pointerEvents: "auto" as const }
+};
+
+const menuVariants = {
+  closed: { x: "100%" },
+  open: { x: "0%" }
+};
+
+const itemVariants = {
+  closed: { x: 20, opacity: 0 },
+  open: { x: 0, opacity: 1 }
+};
+
+const subMenuVariants = {
+  closed: { x: "100%", opacity: 0 },
+  open: { x: "0%", opacity: 1 }
+};
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -14,6 +46,17 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Body scroll lock when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => { document.body.style.overflow = 'unset'; };
+  }, [isMenuOpen]);
+
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "About", href: "/about" },
@@ -50,6 +93,43 @@ const Header = () => {
       icon: <Newspaper size={18} />
     },
   ];
+
+  // Mobile menu items structure matching the video design
+  const mobileMenuItems: readonly MobileMenuItem[] = [
+    { id: "home", name: "HOME", href: "/" },
+    {
+      id: "about-us",
+      name: "ABOUT US",
+      hasChildren: true,
+      children: [
+        { name: "About NIH", href: "/about" },
+        { name: "Chairman's Message", href: "/about/chairman" }
+      ]
+    },
+    {
+      id: "members",
+      name: "MEMBERS",
+      hasChildren: true,
+      children: [
+        { name: "NIH Active Members", href: "/membership/active" },
+        { name: "Members Institutions", href: "/membership/institutions" }
+      ]
+    },
+    { id: "activities", name: "ACTIVITIES", href: "/activities" },
+    {
+      id: "membership",
+      name: "MEMBERSHIP",
+      hasChildren: true,
+      children: [
+        { name: "Become NIH Member", href: "/membership/form" }
+      ]
+    },
+    { id: "media", name: "MEDIA", href: "/media" },
+    { id: "news", name: "NEWS", href: "/news" },
+    { id: "careers", name: "CAREERS", href: "/careers" },
+    { id: "contact-us", name: "CONTACT US", href: "/contact" }
+  ] as const;
+
   return (
     <header
       style={{
@@ -155,66 +235,123 @@ const Header = () => {
           </div>
         </div>
       </div>
-      {/* Mobile Menu */}
-      <div
-        className={`lg:hidden transition-all duration-300 ease-in-out ${isMenuOpen ? "max-h-screen opacity-100 py-4" : "max-h-0 opacity-0 overflow-hidden"
-          } bg-white border-t border-gray-100 shadow-xl`}
-      >
-        <div className="px-4 space-y-1">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-secondary"
-              onClick={() => setIsMenuOpen(false)}
+      {/* Mobile Menu - Slide-in from right */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <>
+            {/* Overlay/Backdrop */}
+            <motion.div
+              variants={overlayVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
+              className="fixed inset-0 bg-black/50 z-50"
+              aria-hidden="true"
+            />
+
+            {/* Slide-in Menu Panel */}
+            <motion.div
+              variants={menuVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed right-0 top-0 bottom-0 w-full max-w-sm bg-secondary z-[60] shadow-2xl"
             >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-        <div className="mt-4 px-4 space-y-2 border-t border-gray-100 pt-4 pb-2">
-          {ctaButtons.map((btn) => (
-            <div key={btn.name} className="space-y-1">
-              {btn.hasDropdown ? (
-                <div className="space-y-1">
-                  <div
-                    className={`flex w-full items-center justify-between gap-2 rounded-xl px-5 py-3 text-base font-medium bg-primary text-white`}
-                  >
-                    <div className="flex items-center gap-2">
-                      {btn.icon}
-                      {btn.name}
-                    </div>
-                  </div>
-                  <div className="pl-4 space-y-1 mt-1">
-                    {btn.dropdownItems?.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-primary transition-colors border border-gray-100"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  href={btn.href}
-                  className={`flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-medium ${btn.name === "Membership"
-                    ? "bg-primary text-white"
-                    : "border-2 border-primary text-primary"
-                    }`}
-                  onClick={() => setIsMenuOpen(false)}
+              {/* Close Button */}
+              <button
+                onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
+                className="absolute top-4 right-4 text-white hover:text-primary transition-colors p-2 rounded-full hover:bg-white/10"
+                aria-label="Close menu"
+              >
+                <X size={28} />
+              </button>
+
+              {/* Menu Items Container */}
+              <div className="h-full overflow-y-auto pt-16 pb-8">
+                <motion.div
+                  initial="closed"
+                  animate="open"
+                  className="space-y-0"
                 >
-                  {btn.icon}
-                  {btn.name}
-                </Link>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
+                  {mobileMenuItems.map((item, index) => (
+                    <motion.div
+                      key={item.id}
+                      variants={itemVariants}
+                      transition={{ delay: index * 0.05, type: "spring", damping: 20, stiffness: 100 }}
+                    >
+                      {item.href ? (
+                        <Link
+                          href={item.href}
+                          onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
+                          className="block px-6 py-4 text-white font-semibold text-lg border-b border-white/10 hover:bg-white/5 transition-colors"
+                        >
+                          {item.name}
+                        </Link>
+                      ) : (
+                        <button
+                          onClick={() => setActiveSubMenu(item.id)}
+                          className="w-full flex items-center justify-between px-6 py-4 text-white font-semibold text-lg border-b border-white/10 hover:bg-white/5 transition-colors"
+                        >
+                          <span>{item.name}</span>
+                          <ChevronRight size={20} />
+                        </button>
+                      )}
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+
+              {/* Sub-Menu Panel */}
+              <AnimatePresence>
+                {activeSubMenu && (
+                  <motion.div
+                    variants={subMenuVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
+                    transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                    className="absolute right-0 top-0 bottom-0 w-full bg-secondary z-10"
+                  >
+                    {/* Sub-menu Header with Back Button */}
+                    <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10">
+                      <button
+                        onClick={() => setActiveSubMenu(null)}
+                        className="text-white hover:text-primary transition-colors"
+                      >
+                        <ChevronLeft size={24} />
+                      </button>
+                      <span className="text-white font-semibold text-lg">
+                        {mobileMenuItems.find(i => i.id === activeSubMenu)?.name}
+                      </span>
+                    </div>
+
+                    {/* Sub-menu Items */}
+                    <div className="py-4">
+                      {mobileMenuItems.find(i => i.id === activeSubMenu)?.children?.map((subItem, idx) => (
+                        <motion.div
+                          key={subItem.name}
+                          variants={itemVariants}
+                          transition={{ delay: idx * 0.05, type: "spring", damping: 20, stiffness: 100 }}
+                        >
+                          <Link
+                            href={subItem.href}
+                            onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
+                            className="block px-6 py-3 text-white font-medium text-base hover:bg-white/5 transition-colors"
+                          >
+                            {subItem.name}
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
