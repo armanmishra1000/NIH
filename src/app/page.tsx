@@ -1,4 +1,5 @@
 import HeroSlider from '@/components/HeroSlider';
+import NIHNumbers from '@/components/NIHNumbers';
 
 export default function Home() {
   const slides = [
@@ -23,6 +24,7 @@ export default function Home() {
   return (
     <main className="font-sans">
       <HeroSlider slides={slides} />
+      <NIHNumbers />
     </main>
   );
 }

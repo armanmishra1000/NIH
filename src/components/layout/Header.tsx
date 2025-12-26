@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { User, FileText, Calendar, Newspaper, Menu, X, ChevronDown, ChevronRight, ChevronLeft } from "lucide-react";
+import { User, FileText, Calendar, Newspaper, Menu, X, ChevronRight, ChevronLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Types for mobile menu items
