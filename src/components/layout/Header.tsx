@@ -14,31 +14,54 @@ type MobileMenuItem = {
   children?: readonly { name: string; href: string }[];
 };
 
-// Animation variants for mobile menu
+// Animation variants for premium mobile menu
 const overlayVariants = {
-  closed: { opacity: 0, pointerEvents: "none" as const },
-  open: { opacity: 1, pointerEvents: "auto" as const }
+  closed: { opacity: 0, backdropFilter: "blur(0px)" },
+  open: { opacity: 1, backdropFilter: "blur(8px)" }
 };
 
 const menuVariants = {
-  closed: { x: "100%" },
-  open: { x: "0%" }
+  closed: { x: "100%", opacity: 0 },
+  open: { x: "0%", opacity: 1 }
+};
+
+const containerVariants = {
+  open: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.2 }
+  },
+  closed: {
+    transition: { staggerChildren: 0.05, staggerDirection: -1 }
+  }
 };
 
 const itemVariants = {
-  closed: { x: 20, opacity: 0 },
-  open: { x: 0, opacity: 1 }
+  open: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      x: { stiffness: 1000, velocity: -100 }
+    }
+  },
+  closed: {
+    x: 50,
+    opacity: 0,
+    transition: {
+      x: { stiffness: 1000 }
+    }
+  }
 };
 
 const subMenuVariants = {
-  closed: { x: "100%", opacity: 0 },
-  open: { x: "0%", opacity: 1 }
+  closed: { x: "100%" },
+  open: { x: "0%" }
 };
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
+  const [hoveredBtn, setHoveredBtn] = useState<string | null>(null);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -62,6 +85,7 @@ const Header = () => {
     { name: "About", href: "/about" },
     { name: "Activities", href: "/activities" },
     { name: "Careers", href: "/careers" },
+    { name: "Media", href: "/media" },
   ];
   const ctaButtons = [
     {
@@ -103,7 +127,12 @@ const Header = () => {
       hasChildren: true,
       children: [
         { name: "About NIH", href: "/about" },
-        { name: "Chairman's Message", href: "/about/chairman" }
+        { name: "Chairman's Message", href: "/about/chairman" },
+        { name: "Central Control Board", href: "/about/central-control-board" },
+        { name: "Aims and Objectives", href: "/about/aims" },
+        { name: "Course Brochure", href: "/course-brochure" },
+        { name: "Holistic 'n' Wellness: Monthly E-Magazine", href: "/media/magazine" },
+        { name: "Secretary Column", href: "/about/secretary" },
       ]
     },
     {
@@ -112,10 +141,27 @@ const Header = () => {
       hasChildren: true,
       children: [
         { name: "NIH Active Members", href: "/membership/active" },
-        { name: "Members Institutions", href: "/membership/institutions" }
+        { name: "Lifetime Members", href: "/membership/life" },
+        { name: "Members Institutions", href: "/membership/institutions" },
+        { name: "Yoga Volunteer Members", href: "/membership/yoga-volunteer" },
+        { name: "Yoga Professional Members", href: "/membership/yoga-professional" },
+        { name: "Associate Centres", href: "/membership/associate" }
       ]
     },
-    { id: "activities", name: "ACTIVITIES", href: "/activities" },
+    {
+      id: "activities",
+      name: "ACTIVITIES",
+      hasChildren: true,
+      children: [
+        { name: "Projects", href: "/activities/projects" },
+        { name: "Franchise", href: "/activities/franchise" },
+        { name: "Training Progamme", href: "/activities/training" },
+        { name: "Internship", href: "/activities/internship" },
+        { name: "Volunteership", href: "/activities/volunteership" },
+        { name: "NIH Events", href: "/events" },
+        { name: "Retreat Programmes", href: "/activities/retreat" }
+      ]
+    },
     {
       id: "membership",
       name: "MEMBERSHIP",
@@ -124,7 +170,17 @@ const Header = () => {
         { name: "Become NIH Member", href: "/membership/form" }
       ]
     },
-    { id: "media", name: "MEDIA", href: "/media" },
+    {
+      id: "media",
+      name: "MEDIA",
+      hasChildren: true,
+      children: [
+        { name: "Photo Gallery", href: "/media/photo-gallery" },
+        { name: "Achievements", href: "/media/achievements" },
+        { name: "Video Gallery", href: "/media/video-gallery" },
+        { name: "Media Coverage", href: "/media/coverage" }
+      ]
+    },
     { id: "news", name: "NEWS", href: "/news" },
     { id: "careers", name: "CAREERS", href: "/careers" },
     { id: "contact-us", name: "CONTACT US", href: "/contact" }
@@ -149,13 +205,13 @@ const Header = () => {
                 alt="NIH Logo"
                 width={180}
                 height={60}
-                className="h-16 w-auto"
+                className="h-14 w-auto"
                 priority
               />
             </Link>
           </div>
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden xl:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -167,9 +223,14 @@ const Header = () => {
             ))}
           </nav>
           {/* Right side buttons */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden xl:flex items-center space-x-4">
             {ctaButtons.map((btn) => (
-              <div key={btn.name} className="relative group">
+              <div
+                key={btn.name}
+                className="relative"
+                onMouseEnter={() => btn.hasDropdown && setHoveredBtn(btn.name)}
+                onMouseLeave={() => btn.hasDropdown && setHoveredBtn(null)}
+              >
                 {btn.hasDropdown ? (
                   <>
                     <button
@@ -181,26 +242,30 @@ const Header = () => {
 
                     {/* Dropdown Menu */}
                     <AnimatePresence>
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-[60]">
+                      {hoveredBtn === btn.name && (
                         <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                          initial={{ opacity: 0, y: 15, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          className="bg-white rounded-2xl p-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] min-w-[240px] border border-secondary/10"
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-[60]"
                         >
-                          <div className="flex flex-col gap-1">
-                            {btn.dropdownItems?.map((item) => (
-                              <Link
-                                key={item.name}
-                                href={item.href}
-                                className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-secondary hover:bg-primary/10 border border-transparent hover:border-primary/30 transition-all duration-200"
-                              >
-                                {item.name}
-                              </Link>
-                            ))}
+                          <div className="bg-white rounded-2xl p-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] min-w-[240px] border border-secondary/10">
+                            <div className="flex flex-col gap-1">
+                              {btn.dropdownItems?.map((item) => (
+                                <div key={item.name}>
+                                  <Link
+                                    href={item.href}
+                                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-secondary hover:bg-primary/10 border border-transparent hover:border-primary/30 transition-all duration-200"
+                                  >
+                                    {item.name}
+                                  </Link>
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         </motion.div>
-                      </div>
+                      )}
                     </AnimatePresence>
                   </>
                 ) : (
@@ -219,7 +284,7 @@ const Header = () => {
             ))}
           </div>
           {/* Mobile menu button */}
-          <div className="lg:hidden">
+          <div className="xl:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-secondary focus:outline-none"
@@ -235,18 +300,18 @@ const Header = () => {
           </div>
         </div>
       </div>
-      {/* Mobile Menu - Slide-in from right */}
+      {/* Mobile Menu - Premium Glassmorphic Design */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
-            {/* Overlay/Backdrop */}
+            {/* Glassmorphic Overlay */}
             <motion.div
               variants={overlayVariants}
               initial="closed"
               animate="open"
               exit="closed"
               onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
-              className="fixed inset-0 bg-black/50 z-50"
+              className="fixed inset-0 bg-black/40 z-50 backdrop-blur-sm"
               aria-hidden="true"
             />
 
@@ -256,46 +321,68 @@ const Header = () => {
               initial="closed"
               animate="open"
               exit="closed"
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed right-0 top-0 bottom-0 w-full max-w-sm bg-secondary z-[60] shadow-2xl"
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed right-0 top-0 bottom-0 w-full sm:max-w-[320px] bg-secondary/95 backdrop-blur-xl z-[60] shadow-2xl overflow-hidden flex flex-col"
             >
-              {/* Close Button */}
-              <button
-                onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
-                className="absolute top-4 right-4 text-white hover:text-primary transition-colors p-2 rounded-full hover:bg-white/10"
-                aria-label="Close menu"
-              >
-                <X size={28} />
-              </button>
+              {/* Animated Background Element */}
+              <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Header section - White background for logo contrast */}
+              <div className="relative flex items-center justify-between p-4 border-b border-gray-100 bg-white shadow-sm">
+                <Image
+                  src="/logo.png"
+                  alt="NIH Logo"
+                  width={140}
+                  height={45}
+                  className="h-10 w-auto"
+                />
+                <button
+                  onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
+                  className="text-secondary hover:text-primary transition-colors p-2 rounded-full hover:bg-gray-100 group"
+                  aria-label="Close menu"
+                >
+                  <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
+                </button>
+              </div>
 
               {/* Menu Items Container */}
-              <div className="h-full overflow-y-auto pt-16 pb-8">
+              <div className="relative flex-1 overflow-y-auto overflow-x-hidden no-scrollbar">
                 <motion.div
+                  variants={containerVariants}
                   initial="closed"
                   animate="open"
-                  className="space-y-0"
+                  className="py-6"
                 >
-                  {mobileMenuItems.map((item, index) => (
+                  {mobileMenuItems.map((item) => (
                     <motion.div
                       key={item.id}
                       variants={itemVariants}
-                      transition={{ delay: index * 0.05, type: "spring", damping: 20, stiffness: 100 }}
+                      whileHover={{ x: 5 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-4"
                     >
                       {item.href ? (
                         <Link
                           href={item.href}
                           onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
-                          className="block px-6 py-4 text-white font-semibold text-lg border-b border-white/10 hover:bg-white/5 transition-colors"
+                          className="flex items-center group py-4 border-b border-white/5"
                         >
-                          {item.name}
+                          <span className="text-white/90 group-hover:text-primary font-bold text-base tracking-wider transition-colors uppercase">
+                            {item.name}
+                          </span>
                         </Link>
                       ) : (
                         <button
                           onClick={() => setActiveSubMenu(item.id)}
-                          className="w-full flex items-center justify-between px-6 py-4 text-white font-semibold text-lg border-b border-white/10 hover:bg-white/5 transition-colors"
+                          className="w-full flex items-center justify-between group py-4 border-b border-white/5"
                         >
-                          <span>{item.name}</span>
-                          <ChevronRight size={20} />
+                          <span className="text-white/90 group-hover:text-primary font-bold text-base tracking-wider transition-colors uppercase">
+                            {item.name}
+                          </span>
+                          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                            <ChevronRight size={18} className="text-white/40 group-hover:text-primary" />
+                          </div>
                         </button>
                       )}
                     </motion.div>
@@ -303,7 +390,19 @@ const Header = () => {
                 </motion.div>
               </div>
 
-              {/* Sub-Menu Panel */}
+              {/* Bottom Quick Links / Footer in Menu */}
+              <div className="relative mt-auto p-4 bg-black/20 border-t border-white/10">
+                <div className="flex flex-col gap-4">
+                  <Link
+                    href="/membership/form"
+                    className="bg-primary text-white text-center py-3 rounded-xl font-bold text-sm tracking-widest hover:bg-primary/90 transition-all shadow-lg active:scale-95 uppercase"
+                  >
+                    Join Us Today
+                  </Link>
+                </div>
+              </div>
+
+              {/* Sub-Menu Panel - Sliding from right */}
               <AnimatePresence>
                 {activeSubMenu && (
                   <motion.div
@@ -311,39 +410,52 @@ const Header = () => {
                     initial="closed"
                     animate="open"
                     exit="closed"
-                    transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                    className="absolute right-0 top-0 bottom-0 w-full bg-secondary z-10"
+                    transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                    className="absolute inset-0 bg-secondary z-20 flex flex-col"
                   >
-                    {/* Sub-menu Header with Back Button */}
-                    <div className="flex items-center gap-3 px-6 py-4 border-b border-white/10">
+                    {/* Sub-menu Header */}
+                    <div className="flex items-center gap-4 px-4 py-6 border-b border-white/10 bg-white/5 backdrop-blur-md">
                       <button
                         onClick={() => setActiveSubMenu(null)}
-                        className="text-white hover:text-primary transition-colors"
+                        className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white hover:bg-primary transition-colors"
                       >
-                        <ChevronLeft size={24} />
+                        <ChevronLeft size={20} />
                       </button>
-                      <span className="text-white font-semibold text-lg">
-                        {mobileMenuItems.find(i => i.id === activeSubMenu)?.name}
-                      </span>
+                      <div className="flex flex-col">
+                        <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest leading-none mb-1">Explore</span>
+                        <span className="text-white font-bold text-lg tracking-tight leading-none">
+                          {mobileMenuItems.find(i => i.id === activeSubMenu)?.name}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Sub-menu Items */}
-                    <div className="py-4">
-                      {mobileMenuItems.find(i => i.id === activeSubMenu)?.children?.map((subItem, idx) => (
-                        <motion.div
-                          key={subItem.name}
-                          variants={itemVariants}
-                          transition={{ delay: idx * 0.05, type: "spring", damping: 20, stiffness: 100 }}
-                        >
-                          <Link
-                            href={subItem.href}
-                            onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
-                            className="block px-6 py-3 text-white font-medium text-base hover:bg-white/5 transition-colors"
+                    {/* Sub-menu Items with staggering */}
+                    <div className="flex-1 overflow-y-auto py-6 no-scrollbar">
+                      <motion.div
+                        variants={containerVariants}
+                        initial="closed"
+                        animate="open"
+                        className="space-y-2 px-4"
+                      >
+                        {mobileMenuItems.find(i => i.id === activeSubMenu)?.children?.map((subItem) => (
+                          <motion.div
+                            key={subItem.name}
+                            variants={itemVariants}
+                            whileHover={{ x: 5 }}
+                            whileTap={{ scale: 0.98 }}
                           >
-                            {subItem.name}
-                          </Link>
-                        </motion.div>
-                      ))}
+                            <Link
+                              href={subItem.href}
+                              onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
+                              className="group flex items-center py-3 px-4 rounded-xl hover:bg-white/5 transition-all border border-transparent hover:border-white/10"
+                            >
+                              <span className="text-white/70 group-hover:text-white font-medium text-base transition-colors">
+                                {subItem.name}
+                              </span>
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </motion.div>
                     </div>
                   </motion.div>
                 )}
