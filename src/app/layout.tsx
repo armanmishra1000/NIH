@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
-  title: "NIH - National Institute of Health",
-  description: "Redesigned Header for NIH website",
+  title: "NIH - National Institute of Holistic Health",
+  description: "Join NIH for holistic health, yoga, and wellness education. Transform your life through comprehensive holistic health programs.",
 };
 export default function RootLayout({
   children,
