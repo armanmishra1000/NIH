@@ -187,120 +187,123 @@ const Header = () => {
   ] as const;
 
   return (
-    <header
-      style={{
-        backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.9)" : "white",
-        backdropFilter: isScrolled ? "blur(8px)" : "none",
-        boxShadow: isScrolled ? "0 4px 6px -1px rgb(0 0 0 / 0.1)" : "none",
-      }}
-      className="sticky top-0 z-50 w-full transition-all duration-300"
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex h-20 items-center justify-between">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/logo.png"
-                alt="NIH Logo"
-                width={180}
-                height={60}
-                className="h-14 w-auto"
-                priority
-              />
-            </Link>
-          </div>
-          {/* Desktop Navigation */}
-          <nav className="hidden xl:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-sm font-semibold text-gray-700 hover:text-secondary transition-colors"
-              >
-                {link.name}
+    <>
+      <header
+        style={{
+          backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.9)" : "white",
+          backdropFilter: isScrolled ? "blur(8px)" : "none",
+          boxShadow: isScrolled ? "0 4px 6px -1px rgb(0 0 0 / 0.1)" : "none",
+        }}
+        className="sticky top-0 z-50 w-full transition-all duration-300"
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex h-20 items-center justify-between">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <Link href="/" className="flex items-center">
+                <Image
+                  src="/logo.png"
+                  alt="NIH Logo"
+                  width={180}
+                  height={60}
+                  className="h-14 w-auto"
+                  priority
+                />
               </Link>
-            ))}
-          </nav>
-          {/* Right side buttons */}
-          <div className="hidden xl:flex items-center space-x-4">
-            {ctaButtons.map((btn) => (
-              <div
-                key={btn.name}
-                className="relative"
-                onMouseEnter={() => btn.hasDropdown && setHoveredBtn(btn.name)}
-                onMouseLeave={() => btn.hasDropdown && setHoveredBtn(null)}
-              >
-                {btn.hasDropdown ? (
-                  <>
-                    <button
-                      className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all hover:shadow-md bg-primary text-white hover:bg-opacity-90 cursor-pointer`}
+            </div>
+            {/* Desktop Navigation */}
+            <nav className="hidden xl:flex items-center space-x-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="text-sm font-semibold text-gray-700 hover:text-secondary transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
+            {/* Right side buttons */}
+            <div className="hidden xl:flex items-center space-x-4">
+              {ctaButtons.map((btn) => (
+                <div
+                  key={btn.name}
+                  className="relative"
+                  onMouseEnter={() => btn.hasDropdown && setHoveredBtn(btn.name)}
+                  onMouseLeave={() => btn.hasDropdown && setHoveredBtn(null)}
+                >
+                  {btn.hasDropdown ? (
+                    <>
+                      <button
+                        className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all hover:shadow-md bg-primary text-white hover:bg-opacity-90 cursor-pointer`}
+                      >
+                        {btn.icon}
+                        {btn.name}
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      <AnimatePresence>
+                        {hoveredBtn === btn.name && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-[60]"
+                          >
+                            <div className="bg-white rounded-2xl p-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] min-w-[240px] border border-secondary/10">
+                              <div className="flex flex-col gap-1">
+                                {btn.dropdownItems?.map((item) => (
+                                  <div key={item.name}>
+                                    <Link
+                                      href={item.href}
+                                      className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-secondary hover:bg-primary/10 border border-transparent hover:border-primary/30 transition-all duration-200"
+                                    >
+                                      {item.name}
+                                    </Link>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </>
+                  ) : (
+                    <Link
+                      href={btn.href}
+                      className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all hover:shadow-md ${btn.name === "Membership"
+                        ? "bg-primary text-white hover:bg-opacity-90"
+                        : "border-2 border-primary text-primary hover:bg-primary hover:text-white"
+                        }`}
                     >
                       {btn.icon}
                       {btn.name}
-                    </button>
-
-                    {/* Dropdown Menu */}
-                    <AnimatePresence>
-                      {hoveredBtn === btn.name && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 15, scale: 0.95 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                          transition={{ duration: 0.2, ease: "easeOut" }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-[60]"
-                        >
-                          <div className="bg-white rounded-2xl p-2 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] min-w-[240px] border border-secondary/10">
-                            <div className="flex flex-col gap-1">
-                              {btn.dropdownItems?.map((item) => (
-                                <div key={item.name}>
-                                  <Link
-                                    href={item.href}
-                                    className="flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-secondary hover:bg-primary/10 border border-transparent hover:border-primary/30 transition-all duration-200"
-                                  >
-                                    {item.name}
-                                  </Link>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </>
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+            {/* Mobile menu button */}
+            <div className="xl:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-secondary focus:outline-none"
+                aria-expanded={isMenuOpen}
+              >
+                <span className="sr-only">Open main menu</span>
+                {isMenuOpen ? (
+                  <X size={24} />
                 ) : (
-                  <Link
-                    href={btn.href}
-                    className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all hover:shadow-md ${btn.name === "Membership"
-                      ? "bg-primary text-white hover:bg-opacity-90"
-                      : "border-2 border-primary text-primary hover:bg-primary hover:text-white"
-                      }`}
-                  >
-                    {btn.icon}
-                    {btn.name}
-                  </Link>
+                  <Menu size={24} />
                 )}
-              </div>
-            ))}
-          </div>
-          {/* Mobile menu button */}
-          <div className="xl:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100 hover:text-secondary focus:outline-none"
-              aria-expanded={isMenuOpen}
-            >
-              <span className="sr-only">Open main menu</span>
-              {isMenuOpen ? (
-                <X size={24} />
-              ) : (
-                <Menu size={24} />
-              )}
-            </button>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-      {/* Mobile Menu - Premium Glassmorphic Design */}
+      </header>
+
+      {/* Mobile Menu - Moved outside <header> to avoid containing block issues with backdrop-filter */}
       <AnimatePresence>
         {isMenuOpen && (
           <>
@@ -322,7 +325,7 @@ const Header = () => {
               animate="open"
               exit="closed"
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed right-0 top-0 bottom-0 w-full sm:max-w-[320px] bg-secondary/95 backdrop-blur-xl z-[60] shadow-2xl overflow-hidden flex flex-col"
+              className="fixed right-0 top-0 bottom-0 w-full sm:max-w-[320px] bg-secondary/95 backdrop-blur-xl z-60 shadow-2xl overflow-hidden flex flex-col"
             >
               {/* Animated Background Element */}
               <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
@@ -464,7 +467,7 @@ const Header = () => {
           </>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 };
 export default Header;

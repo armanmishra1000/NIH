@@ -1,4 +1,5 @@
 import HeroSlider from '@/components/HeroSlider';
+import HolisticImpact from '@/components/HolisticImpact';
 import NIHNumbers from '@/components/NIHNumbers';
 
 export default function Home() {
@@ -23,8 +24,12 @@ export default function Home() {
 
   return (
     <main className="font-sans">
-      <HeroSlider slides={slides} />
+      <div id="hero">
+        <HeroSlider slides={slides} />
+      </div>
+
       <NIHNumbers />
+      <HolisticImpact />
     </main>
   );
 }
