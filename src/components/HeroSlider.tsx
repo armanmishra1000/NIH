@@ -29,13 +29,13 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
         >
             {/* Custom Navigation Buttons - Positioned outside Swiper */}
             <button
-                className="swiper-button-prev-custom absolute top-1/2 left-6 -translate-y-1/2 z-20 flex h-14 w-14 items-center justify-center rounded-full border border-[#f3972a]/20 bg-black/30 text-white backdrop-blur-md transition-all hover:bg-[#f3972a] hover:border-[#f3972a] hover:scale-110 active:scale-95 shadow-lg shadow-black/20"
+                className="swiper-button-prev-custom absolute top-1/2 left-6 -translate-y-1/2 z-20 flex h-14 w-14 items-center justify-center rounded-full border border-primary/20 bg-primary/70 text-white transition-all hover:bg-primary hover:border-primary hover:scale-110 active:scale-95 cursor-pointer"
                 aria-label="Previous slide"
             >
                 <ChevronLeft size={24} />
             </button>
             <button
-                className="swiper-button-next-custom absolute top-1/2 right-6 -translate-y-1/2 z-20 flex h-14 w-14 items-center justify-center rounded-full border border-[#f3972a]/20 bg-black/30 text-white backdrop-blur-md transition-all hover:bg-[#f3972a] hover:border-[#f3972a] hover:scale-110 active:scale-95 shadow-lg shadow-black/20"
+                className="swiper-button-next-custom absolute top-1/2 right-6 -translate-y-1/2 z-20 flex h-14 w-14 items-center justify-center rounded-full border border-primary/20 bg-primary/70 text-white transition-all hover:bg-primary hover:border-primary hover:scale-110 active:scale-95 cursor-pointer"
                 aria-label="Next slide"
             >
                 <ChevronRight size={24} />
