@@ -100,7 +100,7 @@ const EventCard = ({ event }: { event: Event }) => {
 
 const EventsSection = () => {
     return (
-        <section className="bg-gray-50 py-12 sm:py-16">
+        <section className="bg-white py-12 sm:py-16">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Simplified Premium Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">

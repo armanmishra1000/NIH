@@ -15,7 +15,6 @@
   --color-primary: #f3972a;      /* Orange */
   --color-secondary: #155b2e;    /* Green */
 
-
   @keyframes marquee {
     0% {
       transform: translateX(100%);
@@ -26,7 +25,28 @@
     }
   }
 
+  @keyframes scroll-vertical {
+    0% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(-33.33%);
+    }
+  }
+
   --animate-marquee: marquee 30s linear infinite;
+  --animate-scroll-vertical: scroll-vertical 25s linear infinite;
+}
+
+/* Animation play-state utilities */
+.animation-play-state-paused {
+  animation-play-state: paused;
+}
+
+/* Pause scroll on hover when parent is hovered */
+.group:hover .scroll-container {
+  animation-play-state: paused;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,4 +60,22 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom scrollbar for webkit browsers */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
 }

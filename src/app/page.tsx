@@ -3,6 +3,8 @@ import HolisticImpact from '@/components/HolisticImpact';
 import NIHNumbers from '@/components/NIHNumbers';
 import NewMembers from '@/components/NewMembers';
 import EventsSection from '@/components/EventsSection';
+import EventsNews from '@/components/EventsNews';
+import QuickLinks from '@/components/QuickLinks';
 
 export default function Home() {
   const slides = [
@@ -29,10 +31,11 @@ export default function Home() {
       <div id="hero">
         <HeroSlider slides={slides} />
       </div>
-
       <NIHNumbers />
+      <EventsNews />
       <HolisticImpact />
       <NewMembers />
+      <QuickLinks />
       <EventsSection />
     </main>
   );

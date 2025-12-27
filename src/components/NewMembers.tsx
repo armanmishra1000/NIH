@@ -58,7 +58,7 @@ const members: Member[] = [
 ];
 
 const MemberCard = ({ member }: { member: Member }) => (
-    <div className="bg-white rounded-2xl p-8 h-full flex flex-col items-center text-center transition-all duration-500 border border-gray-50 hover:border-gray-100 group/card">
+    <div className="bg-white rounded-2xl p-8 h-full flex flex-col items-center text-center transition-all duration-500 border border-gray-200 hover:border-gray-100 group/card">
         {/* Member Image */}
         <div className="relative w-36 h-36 mb-8">
             <div className="absolute inset-0 bg-primary rounded-full blur-2xl opacity-0 group-hover/card:opacity-10 transition-opacity duration-500" />
@@ -102,7 +102,7 @@ const NewMembers = () => {
     }, []);
 
     return (
-        <section className="bg-gray-50 sm:py-16 py-12 relative overflow-hidden border-t border-gray-100">
+        <section className="bg-white sm:py-16 py-12 relative overflow-hidden border-t border-gray-100">
             <div className="max-w-7xl mx-auto px-4">
                 {/* Header Section */}
                 <div className="text-center mb-16">
@@ -182,7 +182,7 @@ const NewMembers = () => {
 
                 {/* New Dual Callout Section */}
                 <div className="max-w-4xl mx-auto">
-                    <div className="bg-gray-50 relative">
+                    <div className="bg-white relative">
                         <div className="relative flex flex-col md:flex-row items-stretch max-w-2xl mx-auto gap-10">
                             {/* NIH Guidance */}
                             <div className="flex-1 flex flex-col items-center text-center">
