@@ -1,6 +1,8 @@
 import HeroSlider from '@/components/HeroSlider';
 import HolisticImpact from '@/components/HolisticImpact';
 import NIHNumbers from '@/components/NIHNumbers';
+import NewMembers from '@/components/NewMembers';
+import EventsSection from '@/components/EventsSection';
 import EventsNews from '@/components/EventsNews';
 import QuickLinks from '@/components/QuickLinks';
 
@@ -32,7 +34,9 @@ export default function Home() {
       <NIHNumbers />
       <EventsNews />
       <HolisticImpact />
+      <NewMembers />
       <QuickLinks />
+      <EventsSection />
     </main>
   );
 }

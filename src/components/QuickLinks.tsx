@@ -45,7 +45,7 @@ const links = [
 
 const QuickLinks = () => {
     return (
-        <section className="sm:py-16 py-12 bg-white border-y border-gray-100">
+        <section className="sm:py-16 py-12 bg-white">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-12 gap-x-8">
                     {links.map((link, index) => (

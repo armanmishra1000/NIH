@@ -20,7 +20,7 @@ export default function Footer() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="bg-white text-secondary sm:py-16 py-12 relative overflow-hidden">
+        <footer className="bg-white text-secondary sm:py-16 py-12 relative border-t border-gray-100 overflow-hidden">
             <div className="container mx-auto px-4 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.2fr_0.80fr_1.2fr_0.80fr] gap-8 lg:gap-10">
                     {/* Column 1: Brand & Socials */}

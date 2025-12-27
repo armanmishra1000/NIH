@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { User, FileText, Calendar, Newspaper, Menu, X, ChevronRight, ChevronLeft } from "lucide-react";
+import { User, FileText, Calendar, Newspaper, Menu, X, ChevronRight, ChevronLeft, UserPlus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Types for mobile menu items
@@ -85,7 +85,7 @@ const Header = () => {
     { name: "About", href: "/about" },
     { name: "Activities", href: "/activities" },
     { name: "Careers", href: "/careers" },
-    { name: "Media", href: "/media" },
+    { name: "News", href: "/news" },
   ];
   const ctaButtons = [
     {
@@ -103,8 +103,9 @@ const Header = () => {
     },
     {
       name: "Course Brochure",
-      href: "/course-brochure",
-      icon: <FileText size={18} />
+      href: "/brochure in sequence 2025.pdf",
+      icon: <FileText size={18} />,
+      isExternal: true
     },
     {
       name: "Events",
@@ -112,9 +113,10 @@ const Header = () => {
       icon: <Calendar size={18} />
     },
     {
-      name: "News",
-      href: "/news",
-      icon: <Newspaper size={18} />
+      name: "Join us",
+      href: "https://forms.gle/DEajoyPQMDhhh1tC9",
+      icon: <UserPlus size={18} />,
+      isExternal: true
     },
   ];
 
@@ -130,7 +132,7 @@ const Header = () => {
         { name: "Chairman's Message", href: "/about/chairman" },
         { name: "Central Control Board", href: "/about/central-control-board" },
         { name: "Aims and Objectives", href: "/about/aims" },
-        { name: "Course Brochure", href: "/course-brochure" },
+        { name: "Course Brochure", href: "/brochure in sequence 2025.pdf" },
         { name: "Holistic 'n' Wellness: Monthly E-Magazine", href: "/media/magazine" },
         { name: "Secretary Column", href: "/about/secretary" },
       ]
@@ -181,7 +183,7 @@ const Header = () => {
         { name: "Media Coverage", href: "/media/coverage" }
       ]
     },
-    { id: "news", name: "NEWS", href: "/news" },
+    { id: "join-us", name: "JOIN US", href: "https://forms.gle/DEajoyPQMDhhh1tC9" },
     { id: "careers", name: "CAREERS", href: "/careers" },
     { id: "contact-us", name: "CONTACT US", href: "/contact" }
   ] as const;
@@ -217,7 +219,7 @@ const Header = () => {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-sm font-semibold text-gray-700 hover:text-secondary transition-colors"
+                  className="font-medium text-black"
                 >
                   {link.name}
                 </Link>
@@ -272,6 +274,8 @@ const Header = () => {
                   ) : (
                     <Link
                       href={btn.href}
+                      target={btn.isExternal ? "_blank" : undefined}
+                      rel={btn.isExternal ? "noopener noreferrer" : undefined}
                       className={`flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all hover:shadow-md ${btn.name === "Membership"
                         ? "bg-primary text-white hover:bg-opacity-90"
                         : "border-2 border-primary text-primary hover:bg-primary hover:text-white"
@@ -368,6 +372,8 @@ const Header = () => {
                       {item.href ? (
                         <Link
                           href={item.href}
+                          target={(item.href.startsWith("http") || item.href.endsWith(".pdf")) ? "_blank" : undefined}
+                          rel={(item.href.startsWith("http") || item.href.endsWith(".pdf")) ? "noopener noreferrer" : undefined}
                           onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
                           className="flex items-center group py-4 border-b border-white/5"
                         >
@@ -397,7 +403,9 @@ const Header = () => {
               <div className="relative mt-auto p-4 bg-black/20 border-t border-white/10">
                 <div className="flex flex-col gap-4">
                   <Link
-                    href="/membership/form"
+                    href="https://forms.gle/DEajoyPQMDhhh1tC9"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="bg-primary text-white text-center py-3 rounded-xl font-bold text-sm tracking-widest hover:bg-primary/90 transition-all shadow-lg active:scale-95 uppercase"
                   >
                     Join Us Today
@@ -449,6 +457,8 @@ const Header = () => {
                           >
                             <Link
                               href={subItem.href}
+                              target={(subItem.href.startsWith("http") || subItem.href.endsWith(".pdf")) ? "_blank" : undefined}
+                              rel={(subItem.href.startsWith("http") || subItem.href.endsWith(".pdf")) ? "noopener noreferrer" : undefined}
                               onClick={() => { setIsMenuOpen(false); setActiveSubMenu(null); }}
                               className="group flex items-center py-3 px-4 rounded-xl hover:bg-white/5 transition-all border border-transparent hover:border-white/10"
                             >
