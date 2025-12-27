@@ -85,7 +85,7 @@ export default function AboutNIH() {
                             className="lg:col-span-5"
                         >
                             <div className="relative group">
-                                <div className="relative bg-white/70 backdrop-blur-xl border border-white sm:p-8 p-6 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] overflow-hidden">
+                                <div className="relative bg-white/70 backdrop-blur-xl border border-white sm:p-8 p-6 rounded-2xl shadow-sm overflow-hidden">
                         
                                     <div className="relative z-10 space-y-6">
                                         <p className="sm:text-2xl text-xl font-serif italic text-zinc-800 leading-snug">
