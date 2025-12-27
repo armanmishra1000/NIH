@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useInView } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 
