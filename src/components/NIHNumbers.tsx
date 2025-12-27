@@ -61,7 +61,7 @@ export default function NIHNumbers() {
         <section className="sm:py-16 py-12 bg-white overflow-hidden">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16 px-4">
-                    <h2 className="text-primary font-bold tracking-[0.2em] uppercase text-sm mb-4">
+                    <h2 className="text-primary font-bold tracking-widest uppercase text-sm mb-4">
                         Statistics
                     </h2>
                     <h3 className="text-4xl md:text-5xl font-black text-zinc-900 mb-6">
