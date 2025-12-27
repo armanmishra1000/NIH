@@ -1,6 +1,7 @@
 import HeroSlider from '@/components/HeroSlider';
 import HolisticImpact from '@/components/HolisticImpact';
 import NIHNumbers from '@/components/NIHNumbers';
+import EventsNews from '@/components/EventsNews';
 
 export default function Home() {
   const slides = [
@@ -27,8 +28,8 @@ export default function Home() {
       <div id="hero">
         <HeroSlider slides={slides} />
       </div>
-
       <NIHNumbers />
+      <EventsNews />
       <HolisticImpact />
     </main>
   );
