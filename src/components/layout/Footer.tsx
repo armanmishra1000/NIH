@@ -118,7 +118,7 @@ export default function Footer() {
                             Terms of Service
                         </Link> */}
                         <span>
-                            Designed & Developed By : <span className="text-primary font-bold">Aperture Pvt. Ltd.</span>
+                            Designed & Developed By : <span className="text-primary font-bold">Apexture Pvt. Ltd.</span>
                         </span>
                     </div>
                 </div>
