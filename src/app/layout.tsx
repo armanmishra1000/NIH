@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "NIH - National Institute of Holistic Health",
   description: "Join NIH for holistic health, yoga, and wellness education. Transform your life through comprehensive holistic health programs.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 export default function RootLayout({
   children,
