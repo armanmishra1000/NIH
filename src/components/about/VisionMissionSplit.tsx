@@ -1,0 +1,101 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { GraduationCap, BookOpen, Microscope, Eye } from "lucide-react";
+
+const missionPoints = [
+    {
+        title: "Educational Excellence",
+        icon: GraduationCap,
+        content: "To start, establish, run, and maintain schools providing sound pre-primary, primary, middle, secondary, and higher education by seeking formal recognition.",
+    },
+    {
+        title: "Professional Training",
+        icon: BookOpen,
+        content: "Arranging training in computer science, fine arts, music, and holistic health (Ayurveda, Naturopathy, Yoga, etc.), alongside skill development and placement services.",
+    },
+    {
+        title: "Research & Healthcare",
+        icon: Microscope,
+        content: "Conducting rigorous research in education and healthcare disciplines across various subjects to advance holistic wellness and academic standards.",
+    }
+];
+
+export default function VisionMissionSplit() {
+    return (
+        <section className="sm:py-16 py-12 bg-white relative">
+            <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 md:gap-12 gap-8 items-stretch">
+
+                    {/* Vision - High Contrast Sticky */}
+                    <div className="relative">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="sticky top-24 bg-zinc-900 rounded-4xl p-10 md:p-16 text-white overflow-hidden shadow-2xl"
+                        >
+                            {/* Abstract Background Element */}
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] -mr-32 -mt-32" />
+
+                            <div className="relative z-10 space-y-8">
+                                <div className="inline-flex items-center px-4 py-2 bg-primary/20 rounded-full text-primary font-bold text-sm uppercase tracking-widest">
+                                    <Eye className="w-4 h-4 mr-2" />
+                                    Our Vision
+                                </div>
+
+                                <h3 className="text-3xl md:text-5xl font-black leading-tight">
+                                    Creating a <span className="text-primary italic">Healthy World</span> through Unity
+                                </h3>
+
+                                <p className="text-lg md:text-xl text-zinc-400 leading-relaxed font-medium">
+                                    To establish a global community where holistic health is accessible to all, bridging the gap between ancient wisdom and modern living.
+                                </p>
+
+                                <div className="flex items-center gap-6">
+                                    <div className="w-16 h-px bg-zinc-500" />
+                                    <span className="text-xs font-black uppercase tracking-[0.3em] text-zinc-400">Established for Excellence</span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    {/* Mission - Simple & Professional Cards */}
+                    <div className="space-y-6">
+                        <motion.div className="inline-flex items-center px-4 py-2 bg-secondary/20 rounded-full text-secondary font-bold text-sm uppercase tracking-widest">
+                            <Eye className="w-4 h-4 mr-2" />
+                            Our Mission
+                        </motion.div>
+
+                        <div className="grid gap-6">
+                            {missionPoints.map((point, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, x: 20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="group relative bg-zinc-50 border border-zinc-100 p-8 rounded-2xl hover:bg-white hover:shadow-md hover:border-transparent transition-all duration-300"
+                                >
+                                    <div className="flex items-start gap-6">
+                                        <div className="flex-shrink-0 w-14 h-14 bg-white text-primary rounded-2xl flex items-center justify-center shadow-sm group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                                            <point.icon className="w-7 h-7" />
+                                        </div>
+                                        <div className="space-y-3">
+                                            <h4 className="sm:text-xl text-lg font-bold text-zinc-900 group-hover:text-primary transition-colors">
+                                                {point.title}
+                                            </h4>
+                                            <p className="text-zinc-600 leading-relaxed">
+                                                {point.content}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
