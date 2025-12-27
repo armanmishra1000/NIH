@@ -1,4 +1,5 @@
 import HeroSlider from '@/components/HeroSlider';
+import HolisticImpact from '@/components/HolisticImpact';
 
 export default function Home() {
   const slides = [
@@ -22,7 +23,11 @@ export default function Home() {
 
   return (
     <main className="font-sans">
-      <HeroSlider slides={slides} />
+      <div id="hero">
+        <HeroSlider slides={slides} />
+      </div>
+
+      <HolisticImpact />
     </main>
   );
 }
