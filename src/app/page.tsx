@@ -1,6 +1,7 @@
 import HeroSlider from '@/components/HeroSlider';
 import HolisticImpact from '@/components/HolisticImpact';
 import NIHNumbers from '@/components/NIHNumbers';
+import NewMembers from '@/components/NewMembers';
 
 export default function Home() {
   const slides = [
@@ -30,6 +31,7 @@ export default function Home() {
 
       <NIHNumbers />
       <HolisticImpact />
+      <NewMembers />
     </main>
   );
 }
